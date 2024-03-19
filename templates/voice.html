@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Leaf disease predection</title>
+        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css"></link> -->
+        <!-- Favicon-->
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="http://127.0.0.1:5000/static/css/styles.css" rel="stylesheet" />
+        <style>
+            /* .speech {border: 1px solid #DDD; width: 300px; padding: 0; margin: 0} */
+            .speech input { display: inline-block;width: 91%;}
+            .speech img {float: right; width: 40px }
+
+            #Box{
+                padding: 25px;
+                background-color: white;
+                height: 60vh;
+            }
+            .row{
+                margin-top: 200px;
+            }
+            body{
+                background-color: aliceblue;
+            }
+          </style>
+
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+            <div class="container">
+                <!-- <li class="nav-item"><a class="nav-link" href="#page-top">AUTISM</a></li> -->
+                <a class="navbar-brand h1" href="#page-top">FORMER CONNECT</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars ms-1"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div id="Box">
+                        <center><h3>Query</h3></center>
+                        <hr>
+                        <br>
+                        <form id="labnol" method="post" action="/voice_assistant">
+                            <div class="speech">
+                              <select name="lang" id="Lang" class="form-control">
+                                <option value="en">English</option>
+                                <option value="kn">Kannada</option>
+                              </select>
+                              <br>
+                              <input type="text" class="form-control" name="query" id="transcript" placeholder="Speak" />
+                              <img onclick="startDictation()" src="http://127.0.0.1:5000/static/mic.jfif" />
+                            </div>
+                            <br>
+                            <input type="submit" value="Submit" class="btn btn-success">
+                          </form>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div id="Box">
+                        <center><h3>Answer</h3></center>
+                        <hr>
+                        <br>
+                        {% if answer %}
+                            <p>{{answer}}</p>
+                            <audio controls autoplay>
+                                <source src="{{song}}" type="audio/mpeg">
+                            </audio>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="http://127.0.0.1:5000/static/js/scripts.js"></script>
+        <script>
+            function startDictation() {
+          
+              if (window.hasOwnProperty('webkitSpeechRecognition')) {
+          
+                var recognition = new webkitSpeechRecognition();
+          
+                recognition.continuous = false;
+                recognition.interimResults = false;
+          
+                recognition.lang = document.getElementById('Lang').value
+                recognition.start();
+          
+                recognition.onresult = function(e) {
+                  document.getElementById('transcript').value
+                                           = e.results[0][0].transcript;
+                  recognition.stop();
+                //   document.getElementById('labnol').submit();
+                };
+          
+                recognition.onerror = function(e) {
+                  recognition.stop();
+                }
+          
+              }
+            }
+          </script>
+    </body>
+</html>
